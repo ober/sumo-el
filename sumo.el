@@ -1,5 +1,5 @@
-;;; sumo.el --- SumoLogic Management Interface
 ;;; -*- lexical-binding: t -*-
+;;; sumo.el --- SumoLogic Management Interface
 
 ;; Copyright (C) 2014 Jaime Fournier <jaimef@linbsd.org>
 
