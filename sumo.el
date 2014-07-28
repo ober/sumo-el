@@ -106,6 +106,24 @@
     (princ " ")
     (princ "\n")))
 
+
+(defun sumo-print-collector (element)
+  (let* (
+	 (alive (format "%s" (cdr (assoc 'alive element))))
+	 (links (format "%s" (cdr (assoc 'href (elt (cdr (assoc 'links element)) 0)))))
+	 (id (format "%s" (cdr (assoc 'id element))))
+	 (timeZone (format "%s" (cdr (assoc 'timeZone element))))
+	 (name (format "%s" (cdr (assoc 'name element))))
+	 (collectorVersion (format "%s" (cdr (assoc 'collectorVersion element))))
+	 (collectorType (format "%s" (cdr (assoc 'collectorType element))))
+	 )
+    (insert (propertize (format " name:%s" name) 'face '(:foreground "green")))
+    (insert (propertize (format " id:%s" id) 'face '(:foreground "purple")))
+    (insert (propertize (format " timeZone:%s" timeZone) 'face '(:foreground "red")))
+    (insert (propertize (format " Alive?:%s" alive) 'face '(:foreground "blue")))
+    (sumo-create-link-for-collectors (concat "https://api.sumologic.com/api/" links) (concat "https://api.sumologic.com/api/" links))
+    (princ "\n")))
+
 (defun sumo-print-search (element)
   (let* (
 	 (messagetime (format "%s" (cdr (assoc '_messagetime element))))
