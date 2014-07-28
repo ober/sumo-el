@@ -137,7 +137,7 @@
     (insert (propertize (format " %s" receipttime) 'face '(:foreground "green")))
     (insert (propertize (format " %s" sourcehost) 'face '(:foreground "orange")))
     (insert (propertize (format " %s\n" sourcecategory) 'face '(:foreground "purple")))
-    (insert (propertize (format "** Raw\n%s" raw) 'face '(:foreground "black")))
+    (insert (propertize (format "** Raw\n%s" raw) 'face '(:foreground "green")))
     (princ "\n")))
 
 (defun sumo-create-link-for-collectors (title id)
