@@ -117,11 +117,11 @@
 	 (collectorVersion (format "%s" (cdr (assoc 'collectorVersion element))))
 	 (collectorType (format "%s" (cdr (assoc 'collectorType element))))
 	 )
-    (insert (propertize (format " name:%s" name) 'face '(:foreground "green")))
-    (insert (propertize (format " id:%s" id) 'face '(:foreground "purple")))
-    (insert (propertize (format " timeZone:%s" timeZone) 'face '(:foreground "red")))
+    (sumo-create-link-for-collectors name (concat "https://api.sumologic.com/api/" links))
+    (insert (propertize (format " %s" id) 'face '(:foreground "purple")))
+    (insert (propertize (format " %s" timeZone) 'face '(:foreground "red")))
     (insert (propertize (format " Alive?:%s" alive) 'face '(:foreground "blue")))
-    (sumo-create-link-for-collectors (concat "https://api.sumologic.com/api/" links) (concat "https://api.sumologic.com/api/" links))
+
     (princ "\n")))
 
 (defun sumo-print-search (element)
