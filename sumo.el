@@ -260,34 +260,24 @@
   (interactive "sQuery:\nsFrom:\nsTo:")
   (sumo-do-search-time query from to))
 
-(defun sumo-add-monitor (id json-file)
+(defun sumo-add-source-to-id (id query-data)
   (let* (
-	 (id id)
-	 (json-file json-file)
-	 (url (format "https://api.sumologic.com/api/v1/collectors/%s/" id))
-	 ;;.(url "http://localhost:4567/foo")
+	 ;;(url (format "https://api.sumologic.com/api/v1/collectors/%s/" id))
+	 (url "http://localhost:4567/foo")
 	 )
     (message "XXX: blasting %s" url)
     (request url
 	     :type "POST"
-	     :data (json-encode '((source (pathExpression . "/tmp/test.log") (cutoffTimestamp . 0) (sourceType . "LocalFile") (name . "TestError"))))
-	     ;;:data data ;; (get-string-from-file json-file) ;;(json-encode '(("key" . "value") ("key2" . "value2")))
-	     :headers '(
-			("Authorization" . ,sumo_basic_auth)
-			("Content-Type" . "application/json")
-			)
+	     :data query-data
+	     :headers '(("Authorization" . ,sumo_basic_auth)
+			("Content-Type" . "application/json"))
 	     :parser 'json-read
-	     :error (function*
-		       (lambda (&key data &allow-other-keys)
-			 (message "Error: %S" (assoc-default 'json data)))))
-    	     :status-code (function*
-		       (lambda (&key data &allow-other-keys)
-			 (message "StatusCode: %S" (assoc-default 'json data))))
-
 	     :success (function*
 		       (lambda (&key data &allow-other-keys)
-			 (message "I sent: %S" (assoc-default 'json data))))
-    ))
+			 (message "I sent: %S" (assoc-default 'json data)))))))
+
+(sumo-add-source-to-id 101011014 (json-encode '((source (pathExpression . "/tmp/test.log") (cutoffTimestamp . 0) (sourceType . "LocalFile") (name . "TestError")))))
+
 
 (defun sumo-add-all-logs (id)
   ;;https://api.sumologic.com/api/v1/collectors/213812770/sources
@@ -299,18 +289,13 @@
   (sumo-add-source-to-id id sumo-unicorn)
   )
 
-(defun sumo-add-source-to-id (id data)
+(defun sumo-add-source-to-id (id query-data)
   (let (
 	(heads `(
 		("Content-Type" . "application/json")
 		("Authorization" . ,sumo_basic_auth)
 		))
-	(url "http://127.0.0.1:4567/foo")
-	(data data)
-	(query-data (make-hash-table :test 'equal))
-	)
-	(puthash 'name "jaime" query-data)
-    (message "XXX: id:%s heads:%s data:%s type%s" id heads data (type-of data))
+	(url "http://localhost:4567/foo"))
 
     (web-http-post
      (lambda (con header data)
