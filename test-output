@@ -1,0 +1,7 @@
+With the Request version I get this, which is what I want.
+::1 - - [28/Jul/2014 20:30:16] "POST /foo HTTP/1.1" 200 26 0.0005
+{"source":{"pathExpression":"\/tmp\/test.log","cutoffTimestamp":0,"sourceType":"LocalFile","name":"TestError"}}
+application/json
+
+With The web.el version I get a null body.
+WAS NIL!!! Puma::NullIO

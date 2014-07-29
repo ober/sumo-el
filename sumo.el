@@ -261,11 +261,7 @@
   (sumo-do-search-time query from to))
 
 (defun sumo-add-source-to-id (id query-data)
-  (let* (
-	 ;;(url (format "https://api.sumologic.com/api/v1/collectors/%s/" id))
-	 (url "http://localhost:4567/foo")
-	 )
-    (message "XXX: blasting %s" url)
+  (let* ((url "http://localhost:4567/foo"))
     (request url
 	     :type "POST"
 	     :data query-data
@@ -275,6 +271,19 @@
 	     :success (function*
 		       (lambda (&key data &allow-other-keys)
 			 (message "I sent: %S" (assoc-default 'json data)))))))
+
+(defun sumo-add-source-to-id (id query-data)
+  (let ((heads `(("Content-Type" . "application/json")
+		 ("Authorization" . ,sumo_basic_auth)))
+	(url "http://localhost:4567/foo"))
+    (web-http-post
+     (lambda (con header data)
+       (mapcar #'sumo-print-message data))
+     :url url
+     :extra-headers heads
+     :data query-data
+     :mime-type "application/json"
+     )))
 
 (sumo-add-source-to-id 101011014 (json-encode '((source (pathExpression . "/tmp/test.log") (cutoffTimestamp . 0) (sourceType . "LocalFile") (name . "TestError")))))
 
@@ -288,21 +297,3 @@
   ;;(sumo-add-source-to-id id sumo-nginx)
   (sumo-add-source-to-id id sumo-unicorn)
   )
-
-(defun sumo-add-source-to-id (id query-data)
-  (let (
-	(heads `(
-		("Content-Type" . "application/json")
-		("Authorization" . ,sumo_basic_auth)
-		))
-	(url "http://localhost:4567/foo"))
-
-    (web-http-post
-     (lambda (con header data)
-       ;;(with-output-to-temp-buffer "*sumo-update*"
-         (mapcar #'sumo-print-message data))
-     :url url
-     :extra-headers heads
-     :data query-data
-     :mime-type "application/json"
-     )))
