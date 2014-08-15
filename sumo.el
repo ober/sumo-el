@@ -65,8 +65,7 @@
 
 (defun sumo-do-get-sources (uri)
   (let ((data `(("Authorization" . ,sumo_basic_auth)))
-	(uri uri)
-	)
+	(uri uri))
     (web-http-get
      (lambda (httpc header my-data)
        (with-output-to-temp-buffer "*sumo-sources*"
@@ -229,7 +228,7 @@
 (defun sumo-do-search-time (query from to)
   (lexical-let ((my-search-buffer (concat "*sumo-" query "*"))
 	(data `(("Authorization" . ,sumo_basic_auth))))
-    (message "XXX: we got my-search-buffer%s" my-search-buffer)
+    (message "aaa: we got my-search-buffer%s" my-search-buffer)
     (web-http-get
      (lambda (httpc header my-data)
        (with-output-to-temp-buffer my-search-buffer
@@ -251,6 +250,10 @@
      :url (format "https://api.sumologic.com/api/v1/logs/search?q=%s" query)
      :exotra-headers data
      )))
+
+
+(defun sumo-search-15-minutes (query begin-time)
+  (interactive "sQuery:\nsBegin Time <YYYY-MM-DD HH:MM:SS>"))
 
 (defun sumo-search (query)
   (interactive "sQuery: ")
@@ -285,7 +288,7 @@
      :mime-type "application/json"
      )))
 
-(sumo-add-source-to-id 101011014 (json-encode '((source (pathExpression . "/tmp/test.log") (cutoffTimestamp . 0) (sourceType . "LocalFile") (name . "TestError")))))
+#XXX (sumo-add-source-to-id 101011014 (json-encode '((source (pathExpression . "/tmp/test.log") (cutoffTimestamp . 0) (sourceType . "LocalFile") (name . "TestError")))))
 
 
 (defun sumo-add-all-logs (id)
